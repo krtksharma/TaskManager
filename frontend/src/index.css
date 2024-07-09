@@ -1,0 +1,126 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin-top: 20px;
+  padding: 0 15px;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.alert {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  color: #343a40;
+  margin-bottom: 2rem;
+}
+
+.description-field {
+  word-wrap: break-word;
+  max-height: 200px;
+  overflow: auto;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  max-width: 100%;
+}
+
+.modal-body {
+  overflow-x: hidden;
+}
+
+.task-item-content {
+  flex-grow: 1;
+}
+
+.task-item-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .task-item-content {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .task-item-content {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  .task-item-content {
+    font-size: 18px;
+  }
+}
+
+.task-form {
+  margin-bottom: 20px;
+}
+
+.task-item-buttons .btn {
+  margin: 2px;
+}
+
+.task-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.task-form .btn-primary {
+  width: 100%;
+}
+
+.update-task-modal .modal-dialog {
+  max-width: 500px;
+}
+
+.task-form-container {
+  border-right: 1px solid #ddd;
+  padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .task-form-container {
+    border-right: none;
+    padding-right: 0;
+  }
+}
+
+.task-list-container {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination .page-item {
+  cursor: pointer;
+}
