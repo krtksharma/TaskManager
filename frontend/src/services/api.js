@@ -6,7 +6,7 @@ export const getTasks = async (filters = {}) => {
     try {
         const queryString = new URLSearchParams(filters).toString();
         const response = await axios.get(`${API_URL}?${queryString}`);
-        return response.data;  // Return data directly from the response
+        return response.data;  
     } catch (error) {
         console.error('Error fetching tasks:', error);
         throw new Error('Failed to fetch tasks');

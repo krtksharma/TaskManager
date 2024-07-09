@@ -5,7 +5,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 const TaskList = ({ tasks, onEditTask, handleDeleteTask }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    return new Date(dateString).toLocaleDateString(); // Format the date as MM/DD/YYYY
+    return new Date(dateString).toLocaleDateString(); 
   };
 
   return (

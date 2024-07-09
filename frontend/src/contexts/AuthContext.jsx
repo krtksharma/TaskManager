@@ -5,7 +5,7 @@ import { useAuth } from '@clerk/clerk-react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { user, isLoaded } = useAuth();  // Fetch `user` and `isLoaded` state from `useAuth`
+  const { user, isLoaded } = useAuth(); 
   return (
     <AuthContext.Provider value={{ user, isLoaded }}>
       {children}
