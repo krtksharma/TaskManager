@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: '*',
+    origin: '*',  // Allow requests from any origin
     methods: ['GET', 'POST'],
   },
 });
@@ -23,7 +23,12 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error(err));
 
-app.use(cors());
+// Configure CORS to allow requests from any origin
+app.use(cors({
+  origin: '*',  // Allow requests from any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
+
 app.use(express.json());
 
 app.use(socketMiddleware);
