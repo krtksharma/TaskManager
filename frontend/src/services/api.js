@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/tasks';
+const API_URL = 'https://task-manager-api-kappa.vercel.app/api/tasks';
 
 export const getTasks = async (filters = {}) => {
     try {
