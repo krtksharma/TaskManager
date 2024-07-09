@@ -2,9 +2,12 @@
   "version": 2,
   "name": "task-manager",
   "builds": [
-     { "src": "server.js", "use": "@vercel/node" }
+    { "src": "server.js", "use": "@vercel/node" }
   ],
   "routes": [
-     { "src": "/(.*)", "dest": "/app.js" }
-  ]
+    { "src": "/(.*)", "dest": "/server.js" }
+  ],
+  "env": {
+    "MONGO_URI": "mongodb+srv://krtksharma7:uQAifhEJPWk5QxbY@taskmanager.it3w02o.mongodb.net/taskManager?retryWrites=true&w=majority&appName=taskManager" 
+  }
 }
