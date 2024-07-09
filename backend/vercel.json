@@ -7,11 +7,6 @@
   "routes": [
     { "src": "/(.*)", "dest": "/server.js" }
   ],
-  "functions": {
-    "server.js": {
-      "maxDuration": 60 
-    }
-  },
   "env": {
     "MONGO_URI": "mongodb+srv://krtksharma7:uQAifhEJPWk5QxbY@taskmanager.it3w02o.mongodb.net/taskManager?retryWrites=true&w=majority&appName=taskManager" 
   }
