@@ -1,115 +1,93 @@
-// frontend/src/components/UpdateTaskModal.jsx
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
-const UpdateTaskModal = ({ showModal, setShowModal, selectedTask, handleUpdateTask, setSelectedTask }) => {
-  const [task, setTask] = useState({ ...selectedTask });
+const UpdateTaskModal = ({ task, onHide, onUpdate }) => {
+  const [updatedTask, setUpdatedTask] = useState(task);
 
   useEffect(() => {
-    setTask({ ...selectedTask });
-  }, [selectedTask]);
+    setUpdatedTask(task);
+  }, [task]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTask((prev) => ({
-      ...prev,
-      [name]: name === 'tags' ? value.split(',').map(tag => tag.trim()) :
-             name === 'collaborators' ? value.split(',').map(collab => collab.trim()) :
-             value
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleUpdateTask(task);
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    onUpdate(updatedTask);
   };
 
   return (
-    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+    <Modal show onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>Update Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="name">
+        <Form onSubmit={handleUpdate}>
+          <Form.Group controlId="taskName">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              name="name"
-              value={task.name}
-              onChange={handleChange}
-              required
+              value={updatedTask.name}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, name: e.target.value })}
             />
           </Form.Group>
-          <Form.Group controlId="description">
+          <Form.Group controlId="taskDescription" className="mt-3">
             <Form.Label>Description</Form.Label>
             <Form.Control
-              type="text"
-              name="description"
-              value={task.description}
-              onChange={handleChange}
+              as="textarea"
+              rows={3}
+              value={updatedTask.description}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, description: e.target.value })}
             />
           </Form.Group>
-          <Form.Group controlId="dueDate">
+          <Form.Group controlId="taskDueDate" className="mt-3">
             <Form.Label>Due Date</Form.Label>
             <Form.Control
               type="date"
-              name="dueDate"
-              value={task.dueDate ? task.dueDate.substring(0, 10) : ''}
-              onChange={handleChange}
+              value={updatedTask.dueDate}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, dueDate: e.target.value })}
             />
           </Form.Group>
-          <Form.Group controlId="priority">
+          <Form.Group controlId="taskPriority" className="mt-3">
             <Form.Label>Priority</Form.Label>
             <Form.Control
               as="select"
-              name="priority"
-              value={task.priority}
-              onChange={handleChange}
+              value={updatedTask.priority}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, priority: e.target.value })}
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </Form.Control>
           </Form.Group>
-          <Form.Group controlId="status">
+          <Form.Group controlId="taskStatus" className="mt-3">
             <Form.Label>Status</Form.Label>
             <Form.Control
               as="select"
-              name="status"
-              value={task.status}
-              onChange={handleChange}
+              value={updatedTask.status}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, status: e.target.value })}
             >
               <option value="pending">Pending</option>
               <option value="in-progress">In Progress</option>
               <option value="completed">Completed</option>
             </Form.Control>
           </Form.Group>
-          <Form.Group controlId="tags">
-            <Form.Label>Tags (comma-separated)</Form.Label>
+          <Form.Group controlId="taskTags" className="mt-3">
+            <Form.Label>Tags</Form.Label>
             <Form.Control
               type="text"
-              name="tags"
-              value={task.tags ? task.tags.join(', ') : ''}
-              onChange={handleChange}
+              value={updatedTask.tags.join(', ')}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, tags: e.target.value.split(',').map(tag => tag.trim()) })}
             />
-            <Form.Text className="text-muted">
-              Enter tags separated by commas.
-            </Form.Text>
           </Form.Group>
-          <Form.Group controlId="collaborators">
-            <Form.Label>Collaborators (comma-separated)</Form.Label>
+          <Form.Group controlId="taskCollaborators" className="mt-3">
+            <Form.Label>Collaborators</Form.Label>
             <Form.Control
               type="text"
-              name="collaborators"
-              value={task.collaborators ? task.collaborators.join(', ') : ''}
-              onChange={handleChange}
+              value={updatedTask.collaborators.join(', ')}
+              onChange={(e) => setUpdatedTask({ ...updatedTask, collaborators: e.target.value.split(',').map(collaborator => collaborator.trim()) })}
             />
-            <Form.Text className="text-muted">
-              Enter email addresses of collaborators separated by commas.
-            </Form.Text>
           </Form.Group>
-          <Button type="submit" className="mt-3" variant="primary">Update Task</Button>
+          <Button variant="primary" type="submit" className="mt-3">
+            Update Task
+          </Button>
         </Form>
       </Modal.Body>
     </Modal>

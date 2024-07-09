@@ -9,7 +9,15 @@ import UpdateTaskModal from './UpdateTaskModal';
 const TaskComponent = () => {
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
-  const [newTask, setNewTask] = useState({ name: '', description: '', dueDate: '', priority: 'medium', status: 'pending', tags: [] });
+  const [newTask, setNewTask] = useState({
+    name: '',
+    description: '',
+    dueDate: '',
+    priority: 'medium',
+    status: 'pending',
+    tags: [],
+    collaborators: [],
+  });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -69,7 +77,7 @@ const TaskComponent = () => {
         dueDate: dueDateFilter,
       });
       setTasks(tasksData);
-      filterTasks(tasksData); // Filter tasks and apply pagination
+      filterTasks(tasksData);
     } catch (err) {
       setError('Failed to fetch tasks.');
     } finally {
@@ -85,7 +93,15 @@ const TaskComponent = () => {
     }
     try {
       await createTask(newTask);
-      setNewTask({ name: '', description: '', dueDate: '', priority: 'medium', status: 'pending', tags: [] });
+      setNewTask({
+        name: '',
+        description: '',
+        dueDate: '',
+        priority: 'medium',
+        status: 'pending',
+        tags: [],
+        collaborators: [],
+      });
       setSuccess('Task created successfully.');
       setError(null);
       clearMessages();
@@ -124,7 +140,7 @@ const TaskComponent = () => {
   };
 
   const isValidDate = (dateString) => {
-    if (!dateString) return true; // Empty date is allowed (optional)
+    if (!dateString) return true;
     const date = new Date(dateString);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -135,7 +151,7 @@ const TaskComponent = () => {
     setTimeout(() => {
       setSuccess(null);
       setError(null);
-    }, 5000); // 5000ms = 5 seconds
+    }, 5000);
   };
 
   const filterTasks = (tasksToFilter = tasks) => {
@@ -149,7 +165,7 @@ const TaskComponent = () => {
       (!dueDateFilter || new Date(task.dueDate) <= new Date(dueDateFilter))
     );
     setFilteredTasks(filtered);
-    setCurrentPage(1); // Reset to the first page on filter change
+    setCurrentPage(1);
   };
 
   const paginateTasks = () => {
@@ -179,7 +195,7 @@ const TaskComponent = () => {
               placeholder="Search tasks by name, description, or tags"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={fetchTasks}  // Fetch tasks on search blur
+              onBlur={fetchTasks}
             />
           </Form.Group>
           <div className="w-100">
@@ -222,14 +238,18 @@ const TaskComponent = () => {
       ) : (
         <>
           <div className="flex-grow-1 overflow-auto">
-            <TaskList tasks={paginatedTasks} onEditTask={(task) => { setSelectedTask(task); setShowModal(true); }} onDeleteTask={handleDeleteTask} />
+            <TaskList
+              tasks={paginatedTasks}
+              onEditTask={(task) => { setSelectedTask(task); setShowModal(true); }}
+              handleDeleteTask={handleDeleteTask}
+            />
           </div>
           <div className="d-flex justify-content-center mt-4">
             <Pagination>
               <Pagination.Prev onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)} />
-              {[...Array(pageCount)].map((_, index) => (
-                <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => handlePageChange(index + 1)}>
-                  {index + 1}
+              {[...Array(pageCount)].map((_, i) => (
+                <Pagination.Item key={i + 1} active={i + 1 === currentPage} onClick={() => handlePageChange(i + 1)}>
+                  {i + 1}
                 </Pagination.Item>
               ))}
               <Pagination.Next onClick={() => currentPage < pageCount && handlePageChange(currentPage + 1)} />
@@ -237,12 +257,11 @@ const TaskComponent = () => {
           </div>
         </>
       )}
-      {selectedTask && (
+      {showModal && selectedTask && (
         <UpdateTaskModal
-          show={showModal}
           task={selectedTask}
           onHide={() => setShowModal(false)}
-          onUpdateTask={handleUpdateTask}
+          onUpdate={(updatedTask) => handleUpdateTask(updatedTask)}
         />
       )}
     </Container>

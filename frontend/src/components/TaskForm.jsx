@@ -1,103 +1,81 @@
-// frontend/src/components/TaskForm.jsx
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { useUser } from '@clerk/clerk-react';
 
 const TaskForm = ({ newTask, setNewTask, handleCreateTask }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewTask((prev) => ({
-      ...prev,
-      [name]: name === 'tags' ? value.split(',').map(tag => tag.trim()) :
-             name === 'collaborators' ? value.split(',').map(collab => collab.trim()) :
-             value
-    }));
-  };
-
-  const { user } = useUser();
-  const { emailAddress } = user.emailAddresses[0];
-
   return (
-    <Form onSubmit={handleCreateTask} className="mb-4">
-      <Form.Group controlId="name">
+    <Form onSubmit={handleCreateTask} className="w-100">
+      <Form.Group controlId="taskName">
         <Form.Label>Name</Form.Label>
         <Form.Control
           type="text"
-          name="name"
+          placeholder="Enter task name"
           value={newTask.name}
-          onChange={handleChange}
-          required
+          onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
         />
       </Form.Group>
-      <Form.Group controlId="description">
+      <Form.Group controlId="taskDescription" className="mt-3">
         <Form.Label>Description</Form.Label>
         <Form.Control
-          type="text"
-          name="description"
+          as="textarea"
+          rows={3}
+          placeholder="Enter task description"
           value={newTask.description}
-          onChange={handleChange}
+          onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
         />
       </Form.Group>
-      <Form.Group controlId="dueDate">
+      <Form.Group controlId="taskDueDate" className="mt-3">
         <Form.Label>Due Date</Form.Label>
         <Form.Control
           type="date"
-          name="dueDate"
           value={newTask.dueDate}
-          onChange={handleChange}
+          onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
         />
       </Form.Group>
-      <Form.Group controlId="priority">
+      <Form.Group controlId="taskPriority" className="mt-3">
         <Form.Label>Priority</Form.Label>
         <Form.Control
           as="select"
-          name="priority"
           value={newTask.priority}
-          onChange={handleChange}
+          onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </Form.Control>
       </Form.Group>
-      <Form.Group controlId="status">
+      <Form.Group controlId="taskStatus" className="mt-3">
         <Form.Label>Status</Form.Label>
         <Form.Control
           as="select"
-          name="status"
           value={newTask.status}
-          onChange={handleChange}
+          onChange={(e) => setNewTask({ ...newTask, status: e.target.value })}
         >
           <option value="pending">Pending</option>
           <option value="in-progress">In Progress</option>
           <option value="completed">Completed</option>
         </Form.Control>
       </Form.Group>
-      <Form.Group controlId="tags">
-        <Form.Label>Tags (comma-separated)</Form.Label>
+      <Form.Group controlId="taskTags" className="mt-3">
+        <Form.Label>Tags</Form.Label>
         <Form.Control
           type="text"
-          name="tags"
-          value={newTask.tags ? newTask.tags.join(', ') : ''}
-          onChange={handleChange}
+          placeholder="Enter tags separated by commas"
+          value={newTask.tags.join(', ')}
+          onChange={(e) => setNewTask({ ...newTask, tags: e.target.value.split(',').map(tag => tag.trim()) })}
         />
-        <Form.Text className="text-muted">
-          Enter tags separated by commas.
-        </Form.Text>
       </Form.Group>
-      <Form.Group controlId="collaborators">
-        <Form.Label>Collaborators (comma-separated)</Form.Label>
+      <Form.Group controlId="taskCollaborators" className="mt-3">
+        <Form.Label>Collaborators</Form.Label>
         <Form.Control
           type="text"
-          name="collaborators"
-          value={newTask.collaborators ? newTask.collaborators.join(', ') : ''}
-          onChange={handleChange}
+          placeholder="Enter collaborators separated by commas"
+          value={newTask.collaborators.join(', ')}
+          onChange={(e) => setNewTask({ ...newTask, collaborators: e.target.value.split(',').map(collaborator => collaborator.trim()) })}
         />
-        <Form.Text className="text-muted">
-          Enter email addresses of collaborators separated by commas.
-        </Form.Text>
       </Form.Group>
-      <Button type="submit" className="mt-3" variant="primary">Create Task</Button>
+      <Button variant="primary" type="submit" className="mt-3">
+        Create Task
+      </Button>
     </Form>
   );
 };
